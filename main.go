@@ -63,7 +63,7 @@ func (f *TMainForm) OnFormCloseQuery(Sender vcl.IObject, CanClose *bool) {
 }
 
 func (f *TMainForm) OnButton1Click(object vcl.IObject) {
-	form1.ShowModal()
+	form1.Show()
 	form1.ScreenCenter()
 	//fmt.Println()
 }
