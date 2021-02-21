@@ -37,7 +37,7 @@ func (f *TMainForm) OnFormCreate(sender vcl.IObject) {
 	f.SetWidth(600)
 	f.SetHeight(400)
 	f.ScreenCenter()
-	f.SetLeft(vcl.Screen.WorkAreaWidth() - 600)
+	f.SetLeft(vcl.Screen.WorkAreaWidth() - 600 - 10)
 	f.SetTop(vcl.Screen.WorkAreaHeight() - 400 - 30)
 	fmt.Println(vcl.Screen.WorkAreaHeight())
 	f.Button1 = vcl.NewButton(f)
