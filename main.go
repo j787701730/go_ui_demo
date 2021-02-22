@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/ying32/govcl/vcl"
+	"github.com/ying32/govcl/vcl/types/colors"
 
 	_ "github.com/ying32/govcl/pkgs/winappres"
 	"github.com/ying32/govcl/vcl/types"
@@ -13,6 +14,7 @@ type TMainForm struct {
 	Button1        *vcl.TButton
 	TStatusBar     *vcl.TStatusBar
 	TMonthCalendar *vcl.TMonthCalendar
+	Text           *vcl.TLabel
 }
 
 type TForm1 struct {
@@ -33,6 +35,11 @@ func main() {
 // --------------MainForm -----------------
 func (f *TMainForm) OnFormCreate(sender vcl.IObject) {
 	f.SetCaption("主窗口")
+
+	// 标题栏不显示
+	//f.EnabledSystemMenu(false)
+	//f.SetBorderStyle(0)
+
 	f.EnabledMaximize(false)
 	f.SetWidth(600)
 	f.SetHeight(400)
@@ -56,6 +63,14 @@ func (f *TMainForm) OnFormCreate(sender vcl.IObject) {
 	f.TMonthCalendar.SetParent(f)
 	f.TMonthCalendar.SetTop(100)
 
+	f.Text = vcl.NewLabel(f)
+	f.Text.SetParent(f)
+	f.Text.SetWidth(200)
+	f.Text.SetAlign(types.AkLeft)
+	f.Text.SetCaption("我对余老师的敬仰犹如滔滔江水连绵不绝，又如黄河泛滥一发不可收拾")
+	f.Text.Font().SetSize(16)
+	f.Text.Font().SetColor(colors.ClBlue)
+	f.Text.SetWordWrap(true)
 }
 
 func (f *TMainForm) OnFormCloseQuery(Sender vcl.IObject, CanClose *bool) {
@@ -65,6 +80,7 @@ func (f *TMainForm) OnFormCloseQuery(Sender vcl.IObject, CanClose *bool) {
 func (f *TMainForm) OnButton1Click(object vcl.IObject) {
 	form1.Show()
 	form1.ScreenCenter()
+	f.EnabledMinimize(false)
 	//fmt.Println()
 }
 
