@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/ying32/govcl/vcl"
-	"github.com/ying32/govcl/vcl/types/colors"
-
 	_ "github.com/ying32/govcl/pkgs/winappres"
+	"github.com/ying32/govcl/vcl"
 	"github.com/ying32/govcl/vcl/types"
+	"github.com/ying32/govcl/vcl/types/colors"
+	"strconv"
+	"time"
 )
 
 type TMainForm struct {
@@ -15,6 +16,7 @@ type TMainForm struct {
 	TStatusBar     *vcl.TStatusBar
 	TMonthCalendar *vcl.TMonthCalendar
 	Text           *vcl.TLabel
+	Timer1         *vcl.TTimer
 }
 
 type TForm1 struct {
@@ -33,17 +35,42 @@ func main() {
 }
 
 // --------------MainForm -----------------
-func (f *TMainForm) OnFormCreate(sender vcl.IObject) {
-	f.SetCaption("主窗口")
 
+func (f *TMainForm) doTimer(sender vcl.IObject) {
+	//f.progress++
+	//if f.progress > 100 {
+	//	f.progress = 0
+	//}
+	//// 进度值
+	//f.taskBar.SetProgressValue(f.progress, 100)
+	timer := time.Now()
+	sMonth := fmt.Sprintf("%02d", int(timer.Month()))
+	sDay := fmt.Sprintf("%02d", timer.Day())
+	sHour := fmt.Sprintf("%02d", timer.Hour())
+	sMinute := fmt.Sprintf("%02d", timer.Minute())
+	sSecond := fmt.Sprintf("%02d", timer.Second())
+	f.Text.SetCaption(strconv.Itoa(timer.Year()) + "-" + sMonth + "-" + sDay + " " + sHour + ":" + sMinute + ":" + sSecond)
+	//if strings.Contains(sSecond, "5") {
+	//	form1.ScreenCenter()
+	//	form1.Show()
+	//}
+}
+
+func (f *TMainForm) OnFormCreate(sender vcl.IObject) {
+
+	f.SetCaption("主窗口")
+	f.SetColor(colors.ClWhite)
 	// 标题栏不显示
 	//f.EnabledSystemMenu(false)
+	// 设置边框, 0 会禁止拉伸和移动
 	//f.SetBorderStyle(0)
 
-	f.EnabledMaximize(false)
+	// 禁止最大化
+	//f.EnabledMaximize(false)
+
 	f.SetWidth(600)
 	f.SetHeight(400)
-	f.ScreenCenter()
+	//f.ScreenCenter()
 	f.SetLeft(vcl.Screen.WorkAreaWidth() - 600 - 10)
 	f.SetTop(vcl.Screen.WorkAreaHeight() - 400 - 30)
 	fmt.Println(vcl.Screen.WorkAreaHeight())
@@ -59,18 +86,33 @@ func (f *TMainForm) OnFormCreate(sender vcl.IObject) {
 	f.TStatusBar.SetSimpleText("我是状态栏: 老牛逼了")
 	f.TStatusBar.SetParent(f)
 
-	f.TMonthCalendar = vcl.NewMonthCalendar(f)
-	f.TMonthCalendar.SetParent(f)
-	f.TMonthCalendar.SetTop(100)
+	//f.TMonthCalendar = vcl.NewMonthCalendar(f)
+	//f.TMonthCalendar.SetParent(f)
+	//f.TMonthCalendar.SetTop(100)
 
+	timer := time.Now()
+	sMonth := fmt.Sprintf("%02d", int(timer.Month()))
+	sDay := fmt.Sprintf("%02d", timer.Day())
+	sHour := fmt.Sprintf("%02d", timer.Hour())
+	sMinute := fmt.Sprintf("%02d", timer.Minute())
+	sSecond := fmt.Sprintf("%02d", timer.Second())
 	f.Text = vcl.NewLabel(f)
 	f.Text.SetParent(f)
-	f.Text.SetWidth(200)
-	f.Text.SetAlign(types.AkLeft)
-	f.Text.SetCaption("我对余老师的敬仰犹如滔滔江水连绵不绝，又如黄河泛滥一发不可收拾")
+	f.Text.SetWidth(400)
+	f.Text.SetHeight(400)
+	//f.Text.SetColor(colors.ClBlack)
+	f.Text.SetAlignment(types.AsrCenter)
+	f.Text.SetLayout(types.AkRight)
+	f.Text.SetCaption(strconv.Itoa(timer.Year()) + "-" + sMonth + "-" + sDay + " " + sHour + ":" + sMinute + ":" + sSecond)
 	f.Text.Font().SetSize(16)
 	f.Text.Font().SetColor(colors.ClBlue)
 	f.Text.SetWordWrap(true)
+	// 居中
+	f.Text.AnchorHorizontalCenterTo(f)
+	f.Text.AnchorVerticalCenterTo(f)
+	f.Timer1 = vcl.NewTimer(f)
+	f.Timer1.SetInterval(1)
+	f.Timer1.SetOnTimer(f.doTimer)
 }
 
 func (f *TMainForm) OnFormCloseQuery(Sender vcl.IObject, CanClose *bool) {
